@@ -1,27 +1,30 @@
 package org.api
 
 import io.javalin.http.Context
-import org.api.model.DraftNote
-import org.api.model.NotFound
-import org.api.model.ToDoListSystem
+import org.model.DraftNote
+import org.model.NotFound
+import org.model.ToDoListSystem
 
 data class OkResponse(val status: String = "Ok")
 data class ErrorResponse(val message: String)
 
 class NoteController(private val toDoListSystem: ToDoListSystem) {
 
+    val userId = "u_1"
+
     fun getNote(ctx: Context) {
         val noteId = ctx.pathParam("id")
         try {
-            ctx.json(toDoListSystem.getNote(noteId))
+            ctx.json(toDoListSystem.getNote(userId, noteId))
         } catch (e: NotFound) {
             ctx.status(404).json(ErrorResponse(e.message!!))
         }
+        
     }
 
     fun createNote(ctx: Context) {
         val draftNote = ctx.body<DraftNote>()
-        toDoListSystem.addNote(draftNote)
+        toDoListSystem.addNote(userId, draftNote)
         ctx.json(draftNote)
     }
 
@@ -29,7 +32,7 @@ class NoteController(private val toDoListSystem: ToDoListSystem) {
         try {
             val noteId = ctx.pathParam("id")
             val draftNote = ctx.body<DraftNote>()
-            toDoListSystem.editNote(noteId, draftNote)
+            toDoListSystem.editNote(userId, noteId, draftNote)
             ctx.json(OkResponse())
         } catch (e: NotFound) {
             ctx.status(404).json(ErrorResponse(e.message!!))
@@ -38,7 +41,7 @@ class NoteController(private val toDoListSystem: ToDoListSystem) {
 
     fun deleteNote(ctx: Context) {
         val noteId = ctx.pathParam("id")
-        toDoListSystem.removeNote(noteId)
+        toDoListSystem.removeNote(userId, noteId)
         ctx.json(OkResponse())
     }
 

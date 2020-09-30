@@ -4,7 +4,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import org.api.ErrorResponse
 import org.api.NoteController
-import org.api.model.getToDoListSystem
+import org.model.getToDoListSystem
 
 class ToDoListApi {
 
