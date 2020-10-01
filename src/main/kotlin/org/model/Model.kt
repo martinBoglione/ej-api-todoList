@@ -38,7 +38,7 @@ class ToDoListSystem() {
         return user.notes.find { it.id == noteId } ?: throw NotFound("Note")
     }
 
-    private fun getUser(userId: String): User = users.find { it.id == userId } ?: throw NotFound("User")
+    fun getUser(userId: String): User = users.find { it.id == userId } ?: throw NotFound("User")
 
     fun login(email: String, password: String): User = users.find { it.email == email && it.password == password } ?: throw NotFound("User")
 
@@ -65,5 +65,5 @@ fun getToDoListSystem(): ToDoListSystem {
 }
 
 fun addNotes(toDoListSystem: ToDoListSystem, userId: String) {
-    for (i in 1..6) toDoListSystem.addNote(userId, DraftNote("note $i", "description $i"))
+    for (i in 1..6) toDoListSystem.addNote(userId, DraftNote("$userId - note $i", "description $i"))
 }
